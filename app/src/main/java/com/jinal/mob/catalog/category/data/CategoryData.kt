@@ -4,7 +4,6 @@ package com.jinal.mob.catalog.category.data
  * @author Jinal Tandel
  * @since 30/05/2021
  */
-data class CatalogData(val items: List<Category>)
 
 data class Category(
     val id: String?,

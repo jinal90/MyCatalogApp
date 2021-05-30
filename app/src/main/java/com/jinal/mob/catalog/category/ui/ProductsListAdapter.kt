@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.jinal.mob.catalog.R
-import com.jinal.mob.catalog.category.data.CatalogData
 import com.jinal.mob.catalog.category.data.Category
 import com.jinal.mob.catalog.category.data.Product
 
@@ -14,7 +13,7 @@ import com.jinal.mob.catalog.category.data.Product
  * @author Jinal Tandel
  * @since 30/05/2021
  */
-class ProductsListAdapter(private val catalogData: CatalogData) :
+class ProductsListAdapter(private val category: Category) :
     RecyclerView.Adapter<ProductsListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -24,11 +23,10 @@ class ProductsListAdapter(private val catalogData: CatalogData) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val category: Category = catalogData.items[0]
         category.products?.get(position)?.let { holder.bindRepo(it) }
     }
 
-    override fun getItemCount(): Int = catalogData.items[0].products?.size ?: 0
+    override fun getItemCount(): Int = category.products?.size ?: 0
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bindRepo(product: Product) {
@@ -42,7 +40,6 @@ class ProductsListAdapter(private val catalogData: CatalogData) :
                 itemView.findViewById<TextView>(R.id.tv_item_price).text =
                     product.salePrice?.currency + " " + it
             }
-
         }
     }
 }

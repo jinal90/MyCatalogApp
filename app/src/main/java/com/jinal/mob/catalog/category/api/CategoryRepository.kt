@@ -1,29 +1,32 @@
 package com.jinal.mob.catalog.category.api
 
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.jinal.mob.catalog.category.data.Category
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import kotlinx.coroutines.*
 
 /**
  * @author Jinal Tandel
  * @since 30/05/2021
+ *
+ * Repository for Category list mutable live data
  */
 class CategoryRepository {
-    private val service: CategoryService
 
-    companion object {
-        const val BASE_URL = "http://mobcategories.s3-website-eu-west-1.amazonaws.com/"
-    }
+    private val _category = MutableLiveData<List<Category>>().apply {
+        val mainActivityJob = Job()
+        val errorHandler = CoroutineExceptionHandler { _, exception ->
+            //TODO: handle error
+            Log.e("CategoryFragment", "Error ${exception.message}")
+        }
 
-    init {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        service = retrofit.create(CategoryService::class.java)
+        val coroutineScope = CoroutineScope(mainActivityJob + Dispatchers.Main)
+        coroutineScope.launch(errorHandler) {
+            val resultList = RetrofitInstance().getProducts()
+            value = resultList
+        }
     }
+    val categoryList: LiveData<List<Category>> = _category
 
-    suspend fun getProducts(): List<Category> { //5
-        return service.retrieveProducts()
-    }
 }

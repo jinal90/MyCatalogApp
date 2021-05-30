@@ -7,6 +7,8 @@ import retrofit2.http.GET
 /**
  * @author Jinal Tandel
  * @since 30/05/2021
+ *
+ * Service class for API calls via retrofit
  */
 interface CategoryService {
 

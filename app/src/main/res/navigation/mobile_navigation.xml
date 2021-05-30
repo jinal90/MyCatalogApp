@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/navigation_food"
-        android:name="com.jinal.mob.catalog.category.ui.CategoryFragment"
+        android:name="com.jinal.mob.catalog.category.ui.FoodFragment"
         android:label="@string/title_food"
         tools:layout="@layout/fragment_category" />
 
     <fragment
         android:id="@+id/navigation_beverages"
-        android:name="com.jinal.mob.catalog.category.ui.CategoryFragment"
+        android:name="com.jinal.mob.catalog.category.ui.BeverageFragment"
         android:label="@string/title_beverage"
         tools:layout="@layout/fragment_category" />
 
