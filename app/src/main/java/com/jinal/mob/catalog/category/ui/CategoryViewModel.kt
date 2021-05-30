@@ -1,5 +1,6 @@
 package com.jinal.mob.catalog.category.ui
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,7 +17,8 @@ class CategoryViewModel : ViewModel() {
 
     private val categoryRepository: CategoryRepository = CategoryRepository()
 
-    fun getCategoryList(): LiveData<List<Category>> {
+    fun getCategoryList(context: Context?): LiveData<List<Category>> {
+        categoryRepository.setContext(context)
         return categoryRepository.categoryList
     }
 

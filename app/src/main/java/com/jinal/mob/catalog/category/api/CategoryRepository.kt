@@ -1,6 +1,8 @@
 package com.jinal.mob.catalog.category.api
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.jinal.mob.catalog.category.data.Category
@@ -14,10 +16,15 @@ import kotlinx.coroutines.*
  */
 class CategoryRepository {
 
+    private var context: Context? = null
+
+    fun setContext(ctx: Context?){
+        context = ctx
+    }
     private val _category = MutableLiveData<List<Category>>().apply {
         val mainActivityJob = Job()
         val errorHandler = CoroutineExceptionHandler { _, exception ->
-            //TODO: handle error
+            Toast.makeText(context, "Error ${exception.message}", Toast.LENGTH_LONG).show()
             Log.e("CategoryFragment", "Error ${exception.message}")
         }
 

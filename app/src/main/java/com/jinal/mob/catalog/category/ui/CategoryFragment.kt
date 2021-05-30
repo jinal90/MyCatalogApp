@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -40,39 +41,32 @@ open class CategoryFragment : Fragment() {
 
         categoryViewModel =
             ViewModelProvider(this).get(CategoryViewModel::class.java)
-
         binding.lifecycleOwner = this
-        binding.categoryViewModel = categoryViewModel
-
         productsList = binding.recyclerViewItems
-
-
         return binding.root
     }
 
     fun getProducts(categoryID: Int) {
         if (Utils().isNetworkConnected(activity)) {
-            categoryViewModel.getCategoryList().observe(viewLifecycleOwner, Observer {
-                productsList.adapter = ProductsListAdapter(it[categoryID]) { product: Product ->
+            categoryViewModel.getCategoryList(activity?.applicationContext).observe(viewLifecycleOwner, Observer {
+                productsList.adapter = ProductsListAdapter(it[categoryID]) { product: Product? ->
                     categoryViewModel.setSelectedProduct(product)
 
 
-                    if (product.categoryId == "36802") {
+                    if (product?.categoryId == "36802") {
                         val action =
                             FoodFragmentDirections.actionNavigationFoodToProductFragment(product)
                         findNavController(this).navigate(action)
                     } else {
                         val action =
-                            BeverageFragmentDirections.actionNavigationBeveragesToProductFragment(
-                                product
-                            )
+                            BeverageFragmentDirections.actionNavigationBeveragesToProductFragment(product)
                         findNavController(this).navigate(action)
                     }
                 }
             })
 
         } else {
-            //TODO: Handle no internet connection
+            Toast.makeText(context, "Error: No Internet Connection", Toast.LENGTH_LONG).show()
             Log.e("CategoryFragment", "No Internet Connection")
         }
     }

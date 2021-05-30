@@ -1,4 +1,4 @@
-package com.jinal.mob.catalog.product.ui
+package com.jinal.mob.catalog.category.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.jinal.mob.catalog.R
 import com.jinal.mob.catalog.category.api.RetrofitInstance
-import com.jinal.mob.catalog.category.ui.CategoryViewModel
 import com.jinal.mob.catalog.databinding.FragmentProductBinding
 import com.squareup.picasso.Picasso
 
@@ -49,11 +48,11 @@ open class ProductFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.tvProductName.text = args.product.name
-        binding.tvProductDescription.text = args.product.description
+        binding.tvProductName.text = args.product?.name
+        binding.tvProductDescription.text = args.product?.description
         binding.tvProductPrice.text =
-            args.product.salePrice?.amount + " " + args.product.salePrice?.currency
-        Picasso.get().load(RetrofitInstance.BASE_URL + args.product.url)
+            args.product?.salePrice?.amount + " " + args.product?.salePrice?.currency
+        Picasso.get().load(RetrofitInstance.BASE_URL + args.product?.url)
             .into(binding.ivProductImage)
 
     }
