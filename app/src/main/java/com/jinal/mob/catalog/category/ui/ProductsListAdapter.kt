@@ -5,6 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.jinal.mob.catalog.R
 import com.jinal.mob.catalog.category.api.RetrofitInstance
@@ -32,6 +35,7 @@ class ProductsListAdapter(private val category: Category) :
     override fun getItemCount(): Int = category.products?.size ?: 0
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        var navController: NavController? = null
         fun bindRepo(product: Product) {
             //TODO: set visibility according to data available
             itemView.findViewById<TextView>(R.id.tv_item_name).text = product.name.orEmpty()
@@ -45,7 +49,21 @@ class ProductsListAdapter(private val category: Category) :
             }
             //TODO: base url
             Picasso.get().load(RetrofitInstance.BASE_URL + product.url).into(itemView.findViewById<ImageView>(R.id.iv_item_image))
+
+            itemView.findViewById<CardView>(R.id.card_view).setOnClickListener{
+                navController = Navigation.findNavController(itemView)
+                if(product.categoryId == "36802")
+                {
+                    navController!!.navigate(R.id.action_navigation_food_to_productFragment)
+                }else{
+                    navController!!.navigate(R.id.action_navigation_beverages_to_productFragment)
+                }
+
+            }
+
         }
     }
 }
+
+
 

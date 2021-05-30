@@ -9,17 +9,29 @@
         android:id="@+id/navigation_food"
         android:name="com.jinal.mob.catalog.category.ui.FoodFragment"
         android:label="@string/title_food"
-        tools:layout="@layout/fragment_category" />
+        tools:layout="@layout/fragment_category" >
+        <action
+            android:id="@+id/action_navigation_food_to_productFragment"
+            app:destination="@id/productFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_beverages"
         android:name="com.jinal.mob.catalog.category.ui.BeverageFragment"
         android:label="@string/title_beverage"
-        tools:layout="@layout/fragment_category" />
+        tools:layout="@layout/fragment_category" >
+        <action
+            android:id="@+id/action_navigation_beverages_to_productFragment"
+            app:destination="@id/productFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_settings"
         android:name="com.jinal.mob.catalog.settings.ui.SettingsFragment"
         android:label="@string/title_settings"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/productFragment"
+        android:name="com.jinal.mob.catalog.product.ui.ProductFragment"
+        android:label="ProductFragment" />
 </navigation>
