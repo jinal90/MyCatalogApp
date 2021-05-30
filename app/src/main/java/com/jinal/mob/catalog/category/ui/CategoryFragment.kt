@@ -11,11 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jinal.mob.catalog.R
 import com.jinal.mob.catalog.category.api.CategoryRepository
 import com.jinal.mob.catalog.category.data.CatalogData
-import com.jinal.mob.catalog.category.data.Category
 import com.jinal.mob.catalog.utility.Utils
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.*
 
 /**
  * @author Jinal Tandel
@@ -25,7 +22,6 @@ class CategoryFragment : Fragment() {
 
     private lateinit var categoryViewModel: CategoryViewModel
     private lateinit var productsList: RecyclerView
-    private val categoryRepository = CategoryRepository()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,26 +39,22 @@ class CategoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (Utils().isNetworkConnected(activity)) {
-            categoryRepository.getProducts(callback)
-        } else {
-            Log.e("CategoryFragment", "No Internet Connection")
-//            AlertDialog.Builder(activity).setTitle("No Internet Connection")
-//                .setMessage("Please check your internet connection and try again")
-//                .setPositiveButton(android.R.string.ok) { _, _ -> }
-//                .setIcon(android.R.drawable.ic_dialog_alert).show()
-        }
-    }
+            //TODO: move service call to main activity instead of fragment
+            val mainActivityJob = Job()
+            val errorHandler = CoroutineExceptionHandler { _, exception ->
+                //TODO: handle error
+                Log.e("CategoryFragment", "Error ${exception.message}")
+            }
 
-    private val callback = object : Callback<List<Category>> {
-        override fun onFailure(call: Call<List<Category>>?, t: Throwable?) {
-            Log.e("CategoryFragment", "Error {${t?.message}}")
-        }
-
-        override fun onResponse(call: Call<List<Category>>?, response: Response<List<Category>>?) {
-            response?.isSuccessful.let {
-                val catalogData = CatalogData(response?.body() ?: emptyList())
+            val coroutineScope = CoroutineScope(mainActivityJob + Dispatchers.Main)
+            coroutineScope.launch(errorHandler) {
+                val resultList = CategoryRepository().getProducts()
+                val catalogData = CatalogData(resultList)
                 productsList.adapter = ProductsListAdapter(catalogData)
             }
+        } else {
+            //TODO: Handle no internet connection
+            Log.e("CategoryFragment", "No Internet Connection")
         }
     }
 }

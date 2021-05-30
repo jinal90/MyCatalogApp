@@ -1,7 +1,7 @@
 package com.jinal.mob.catalog.category.api
 
 import com.jinal.mob.catalog.category.data.Category
-import retrofit2.Call
+
 import retrofit2.http.GET
 
 /**
@@ -11,5 +11,5 @@ import retrofit2.http.GET
 interface CategoryService {
 
     @GET(".")
-    fun retrieveProducts(): Call<List<Category>>
+    suspend fun retrieveProducts(): List<Category>
 }
