@@ -3,11 +3,14 @@ package com.jinal.mob.catalog.category.ui
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.jinal.mob.catalog.R
+import com.jinal.mob.catalog.category.api.RetrofitInstance
 import com.jinal.mob.catalog.category.data.Category
 import com.jinal.mob.catalog.category.data.Product
+import com.squareup.picasso.Picasso
 
 /**
  * @author Jinal Tandel
@@ -40,6 +43,9 @@ class ProductsListAdapter(private val category: Category) :
                 itemView.findViewById<TextView>(R.id.tv_item_price).text =
                     product.salePrice?.currency + " " + it
             }
+            //TODO: base url
+            Picasso.get().load(RetrofitInstance.BASE_URL + product.url).into(itemView.findViewById<ImageView>(R.id.iv_item_image))
         }
     }
 }
+
