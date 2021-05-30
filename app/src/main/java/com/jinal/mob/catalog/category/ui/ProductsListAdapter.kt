@@ -19,7 +19,7 @@ import com.squareup.picasso.Picasso
  * @author Jinal Tandel
  * @since 30/05/2021
  */
-class ProductsListAdapter(private val category: Category) :
+class ProductsListAdapter(private val category: Category, val listener: (Product) -> Unit) :
     RecyclerView.Adapter<ProductsListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -29,14 +29,14 @@ class ProductsListAdapter(private val category: Category) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        category.products?.get(position)?.let { holder.bindRepo(it) }
+        category.products?.get(position)?.let { holder.bindRepo(it, listener) }
     }
 
     override fun getItemCount(): Int = category.products?.size ?: 0
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var navController: NavController? = null
-        fun bindRepo(product: Product) {
+        fun bindRepo(product: Product, listener: (Product) -> Unit) {
             //TODO: set visibility according to data available
             itemView.findViewById<TextView>(R.id.tv_item_name).text = product.name.orEmpty()
             itemView.findViewById<TextView>(R.id.tv_item_description).text =
@@ -47,18 +47,12 @@ class ProductsListAdapter(private val category: Category) :
                 itemView.findViewById<TextView>(R.id.tv_item_price).text =
                     product.salePrice?.currency + " " + it
             }
-            //TODO: base url
-            Picasso.get().load(RetrofitInstance.BASE_URL + product.url).into(itemView.findViewById<ImageView>(R.id.iv_item_image))
+            Picasso.get().load(RetrofitInstance.BASE_URL + product.url)
+                .into(itemView.findViewById<ImageView>(R.id.iv_item_image))
 
-            itemView.findViewById<CardView>(R.id.card_view).setOnClickListener{
+            itemView.findViewById<CardView>(R.id.card_view).setOnClickListener {
                 navController = Navigation.findNavController(itemView)
-                if(product.categoryId == "36802")
-                {
-                    navController!!.navigate(R.id.action_navigation_food_to_productFragment)
-                }else{
-                    navController!!.navigate(R.id.action_navigation_beverages_to_productFragment)
-                }
-
+                listener(product)
             }
 
         }
