@@ -2,26 +2,32 @@ package com.jinal.mob.catalog.category.data
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.annotation.Keep
+import androidx.core.app.NotificationCompat
+import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 
 /**
  * @author Jinal Tandel
  * @since 30/05/2021
  */
 
+@Keep
 data class Category(
-    val id: String?,
-    val name: String?,
-    val description: String?,
-    val products: List<Product>?
+    @SerializedName("id") val id: String?,
+    @SerializedName("name") val name: String?,
+    @SerializedName("description") val description: String?,
+    @SerializedName("products") val products: List<Product>?
 )
 
+@Keep
 data class Product(
-    val id: String?,
-    val name: String?,
-    val url: String?,
-    val description: String?,
-    val categoryId: String?,
-    val salePrice: SalePrice?
+    @SerializedName("id") val id: String?,
+    @SerializedName("name") val name: String?,
+    @SerializedName("url") val url: String?,
+    @SerializedName("description") val description: String?,
+    @SerializedName("categoryId") val categoryId: String?,
+    @SerializedName("salePrice") val salePrice: SalePrice?
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -57,9 +63,10 @@ data class Product(
     }
 }
 
+@Keep
 data class SalePrice(
-    val amount: String?,
-    val currency: String?
+    @SerializedName("amount") val amount: String?,
+    @SerializedName("currency") val currency: String?
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),

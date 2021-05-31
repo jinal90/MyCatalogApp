@@ -49,7 +49,7 @@
     <fragment
         android:id="@+id/productFragment"
         android:name="com.jinal.mob.catalog.category.ui.ProductFragment"
-        android:label="ProductFragment">
+        android:label="@string/title_details_page">
         <argument
             android:name="product"
             app:argType="com.jinal.mob.catalog.category.data.Product"

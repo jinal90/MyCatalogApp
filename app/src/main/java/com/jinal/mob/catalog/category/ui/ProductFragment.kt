@@ -11,6 +11,7 @@ import androidx.navigation.fragment.navArgs
 import com.jinal.mob.catalog.R
 import com.jinal.mob.catalog.category.api.RetrofitInstance
 import com.jinal.mob.catalog.databinding.FragmentProductBinding
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
 /**
@@ -38,10 +39,7 @@ open class ProductFragment : Fragment() {
 
         productViewModel =
             ViewModelProvider(this).get(CategoryViewModel::class.java)
-
         binding.lifecycleOwner = this
-
-
         return binding.root
     }
 
@@ -50,10 +48,17 @@ open class ProductFragment : Fragment() {
 
         binding.tvProductName.text = args.product?.name
         binding.tvProductDescription.text = args.product?.description
-        binding.tvProductPrice.text =
-            args.product?.salePrice?.amount + " " + args.product?.salePrice?.currency
-        Picasso.get().load(RetrofitInstance.BASE_URL + args.product?.url)
-            .into(binding.ivProductImage)
+        binding.tvProductPrice.text = "${args.product?.salePrice?.amount} ${args.product?.salePrice?.currency}"
 
+        args.product?.url?.let {
+            Picasso.get().load(RetrofitInstance.BASE_URL + it)
+                .into(binding.ivProductImage, object: Callback {
+                    override fun onSuccess() {
+                    }
+                    override fun onError(e: java.lang.Exception?) {
+                        binding.ivProductImage.setImageResource(R.drawable.ic_base_image_100)
+                    }
+                })
+        }
     }
 }
